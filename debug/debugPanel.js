@@ -1,5 +1,6 @@
 import { CHUNK_SIZE } from "../data/definitions.js";
 import { getChunkKey } from "../data/world.js";
+import { addToHistory, buildGraphHtml } from "./fpsGraph.js";
 
 const REFRESH_MILLISECONDS = 500;
 const STYLESHEET_PATH = "debug/debugPanel.css";
@@ -49,9 +50,20 @@ function createPanelElement() {
   return element;
 }
 
+function createChildElement(parent, className) {
+  const element = document.createElement("div");
+  element.className = className;
+  parent.appendChild(element);
+  return element;
+}
+
 function createDebugPanel() {
+  const element = createPanelElement();
   return {
-    element: createPanelElement(),
+    element: element,
+    textElement: createChildElement(element, "debugText"),
+    graphElement: createChildElement(element, "debugGraph"),
+    framesPerSecondHistory: [],
     framesCounted: 0,
     lastRefreshTime: performance.now(),
   };
@@ -69,7 +81,13 @@ function updateDebugPanel(panel, currentTime, state, renderer) {
     panel.framesCounted,
     elapsedMilliseconds,
   );
-  panel.element.textContent = buildStatsText(framesPerSecond, state, renderer);
+  panel.textElement.textContent = buildStatsText(
+    framesPerSecond,
+    state,
+    renderer,
+  );
+  addToHistory(panel.framesPerSecondHistory, framesPerSecond);
+  panel.graphElement.innerHTML = buildGraphHtml(panel.framesPerSecondHistory);
   panel.framesCounted = 0;
   panel.lastRefreshTime = currentTime;
 }

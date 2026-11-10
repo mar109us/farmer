@@ -9,3 +9,19 @@
   white-space: pre-line;
   pointer-events: none;
 }
+
+.debugGraph {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: 1px;
+  width: 159px;
+  height: 40px;
+  margin-top: 8px;
+}
+
+.debugBar {
+  width: 3px;
+  flex-shrink: 0;
+  background-color: limegreen;
+}
