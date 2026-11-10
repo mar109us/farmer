@@ -3,7 +3,7 @@ import {
   buildStatsText,
   calculateFramesPerSecond,
   countChunks,
-  getChunkKeyAt,
+  getChunkCoordinate,
 } from "../debug/debugPanel.js";
 import {
   addToHistory,
@@ -26,13 +26,13 @@ test("counts each chunk once", () => {
   expectEqual(countChunks(state), 2);
 });
 
-test("getChunkKeyAt finds the chunk for a decimal position", () => {
-  expectEqual(getChunkKeyAt(8.5, 8.5), "0,0");
-  expectEqual(getChunkKeyAt(16.5, 3.2), "1,0");
+test("getChunkCoordinate finds the chunk for a decimal position", () => {
+  expectEqual(getChunkCoordinate(8.5), 0);
+  expectEqual(getChunkCoordinate(16.5), 1);
 });
 
-test("getChunkKeyAt puts negative positions in the right chunk", () => {
-  expectEqual(getChunkKeyAt(-0.5, 0), "-1,0");
+test("getChunkCoordinate puts negative positions in the right chunk", () => {
+  expectEqual(getChunkCoordinate(-0.5), -1);
 });
 
 test("calculates 60 frames per second from 30 frames in 500 milliseconds", () => {
@@ -53,9 +53,17 @@ test("builds the stats text from the state and renderer", () => {
 
   const expectedText = `FPS: 60
 Chunks loaded: 1
-Position: 8.0, 8.0 (chunk 0,0)
 Draw calls: 256
-Triangles: 3072`;
+Triangles: 3072
+
+position
+x: 8.0
+y: 8.0
+z: 0.0
+
+chunk
+x: 0
+y: 0`;
 
   expectEqual(buildStatsText(60, state, fakeRenderer), expectedText);
 });

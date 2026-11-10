@@ -37,6 +37,7 @@ export function createGameState() {
     player: {
       x: 8,
       y: 8,
+      z: 0,
       yaw: 0,
       pitch: 0,
     },

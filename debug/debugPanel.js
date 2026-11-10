@@ -1,14 +1,11 @@
 import { CHUNK_SIZE } from "../data/definitions.js";
-import { getChunkKey } from "../data/world.js";
 import { addToHistory, buildGraphHtml } from "./fpsGraph.js";
 
-const REFRESH_MILLISECONDS = 500;
+const REFRESH_MILLISECONDS = 100;
 const STYLESHEET_PATH = "debug/debugPanel.css";
 
-export function getChunkKeyAt(x, y) {
-  const chunkX = Math.floor(x / CHUNK_SIZE);
-  const chunkY = Math.floor(y / CHUNK_SIZE);
-  return getChunkKey(chunkX, chunkY);
+export function getChunkCoordinate(position) {
+  return Math.floor(position / CHUNK_SIZE);
 }
 
 export function countChunks(state) {
@@ -23,17 +20,30 @@ export function calculateFramesPerSecond(frameCount, milliseconds) {
   return Math.round((frameCount / milliseconds) * 1000);
 }
 
+function buildPositionText(player) {
+  return `position
+x: ${player.x.toFixed(1)}
+y: ${player.y.toFixed(1)}
+z: ${player.z.toFixed(1)}`;
+}
+
+function buildChunkText(player) {
+  return `chunk
+x: ${getChunkCoordinate(player.x)}
+y: ${getChunkCoordinate(player.y)}`;
+}
+
 export function buildStatsText(framesPerSecond, state, renderer) {
-  const player = state.player;
   const renderInfo = renderer.info.render;
-  const chunkKey = getChunkKeyAt(player.x, player.y);
-  const position = `${player.x.toFixed(1)}, ${player.y.toFixed(1)}`;
 
   return `FPS: ${framesPerSecond}
 Chunks loaded: ${countChunks(state)}
-Position: ${position} (chunk ${chunkKey})
 Draw calls: ${renderInfo.calls}
-Triangles: ${renderInfo.triangles}`;
+Triangles: ${renderInfo.triangles}
+
+${buildPositionText(state.player)}
+
+${buildChunkText(state.player)}`;
 }
 
 function addStylesheet() {
