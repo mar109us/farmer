@@ -3,6 +3,7 @@ import { tillTile } from "./data/crops.js";
 import { getWalkInput, movePlayer } from "./data/player.js";
 import { keysHeld, listenForInput } from "./input.js";
 import { createWorldView, drawFrame } from "./view/scene.js";
+import { startDebugPanel } from "./debug/debugPanel.js";
 
 const MAX_FRAME_SECONDS = 0.1;
 
@@ -41,6 +42,7 @@ function startGame() {
   const view = createWorldView(state);
   listenForInput(state, view.renderer.domElement);
   startGameLoop(state, view);
+  startDebugPanel(state, view.renderer);
 }
 
 startGame();

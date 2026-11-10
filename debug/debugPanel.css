@@ -1,0 +1,11 @@
+#debugPanel {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  padding: 8px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  font-family: monospace;
+  white-space: pre-line;
+  pointer-events: none;
+}
