@@ -1,7 +1,7 @@
 # Farm game: complete data model
 
 ## Context
-The `farmer` folder is empty. The game will be 3/4 top-down, drawn with Canvas 2D later. This document is the model: the data and the rules that change it, designed decision by decision. No drawing yet.
+The `farmer` folder is empty. The game will be first-person 3D, drawn with three.js. This document is the model: the data and the rules that change it, designed decision by decision. No drawing yet.
 
 **Ground rules:** ES modules, no dependencies, state changes live while playing, saving writes to localStorage, functions return `null` on failure, tests are vanilla JS logging to the browser console. Every object property goes on its own line.
 
