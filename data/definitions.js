@@ -2,6 +2,9 @@ export const CHUNK_SIZE = 16;
 export const SOIL_TOTAL = 10;
 export const MAX_WATER_LEVEL = 10;
 export const STARTING_WATER_LEVEL = 5;
+export const WALK_SPEED = 4;
+export const MAX_PITCH = 1.5;
+export const MOUSE_SENSITIVITY = 0.002;
 
 export const SOIL_TYPES = {
   sandy: {

@@ -35,9 +35,10 @@ export function createGameState() {
     weather: "sunny",
     chunks: {},
     player: {
-      x: 0,
-      y: 0,
-      facing: "down",
+      x: 8,
+      y: 8,
+      yaw: 0,
+      pitch: 0,
     },
   };
 }

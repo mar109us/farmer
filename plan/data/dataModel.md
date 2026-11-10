@@ -350,7 +350,8 @@ const state = {
   player: {
     x: 3,
     y: 5,
-    facing: "down",
+    yaw: 0,
+    pitch: 0,
     settings: {
       dominantHand: "right",
     },
@@ -441,7 +442,7 @@ const state = {
 - A growing crop looks up its rules with `ITEM_TYPES.seed[crop.type]`.
 - The allowed lists are on the definition because a pocket's rules never change. `contents` is on the state because what's inside does. The two `inventoryGrids` arrays match by position.
 - `x` and `y` only exist on items placed in a grid. A stack in a hand or on the ground has no position. A 1×1 item has no `isRotated`.
-- The player's `x` and `y` are world tile coordinates; an item's `x` and `y` are cells inside its grid.
+- The player's `x` and `y` are world positions in tiles and can be decimals, so the tile underneath is `Math.floor` of each; an item's `x` and `y` are cells inside its grid.
 
 ## Build order
 1. Chunks + tiles + soil + water + weather rules + crops, with the `seed` and `plant` categories (**this approval**)
@@ -478,7 +479,7 @@ Functions by file:
 
 `data/world.js`, creating and finding:
 - `getAllTiles(state)` → every tile in every chunk that exists
-- `createSoil()`, `createTile()`, `createChunk()`, `createGameState()` (player is only `x`, `y`, `facing` for now; `weather` starts as `"sunny"`)
+- `createSoil()`, `createTile()`, `createChunk()`, `createGameState()` (player is only `x`, `y`, `yaw`, `pitch` for now; `weather` starts as `"sunny"`)
 - `getChunkKey(chunkX, chunkY)` → `"chunkX,chunkY"`
 - `getTile(state, x, y)` → finds or creates the chunk, returns the tile. Uses `Math.floor(x / CHUNK_SIZE)` so negative coordinates land in the right chunk.
 

@@ -1,5 +1,4 @@
 import * as THREE from "three";
-import { CHUNK_SIZE } from "../data/definitions.js";
 import { drawChunk } from "./tiles.js";
 
 const EYE_HEIGHT = 1.6;
@@ -14,7 +13,7 @@ function createScene() {
   return scene;
 }
 
-function createCamera(player) {
+function createCamera() {
   const aspectRatio = window.innerWidth / window.innerHeight;
   const camera = new THREE.PerspectiveCamera(
     FIELD_OF_VIEW,
@@ -22,9 +21,7 @@ function createCamera(player) {
     NEAREST_VISIBLE,
     FARTHEST_VISIBLE,
   );
-  const chunkCentre = CHUNK_SIZE / 2;
-  camera.position.set(player.x, EYE_HEIGHT, player.y);
-  camera.lookAt(chunkCentre, 0, chunkCentre);
+  camera.rotation.order = "YXZ";
   return camera;
 }
 
@@ -42,14 +39,28 @@ function createRenderer() {
   return renderer;
 }
 
-export function renderWorld(state) {
+function updateCamera(camera, player) {
+  camera.position.set(player.x, EYE_HEIGHT, player.y);
+  camera.rotation.set(player.pitch, player.yaw, 0);
+}
+
+export function createWorldView(state) {
   const scene = createScene();
-  const camera = createCamera(state.player);
+  const camera = createCamera();
   const renderer = createRenderer();
 
   addLights(scene);
   drawChunk(scene, state);
-
   document.getElementById("game").appendChild(renderer.domElement);
-  renderer.render(scene, camera);
+
+  return {
+    scene: scene,
+    camera: camera,
+    renderer: renderer,
+  };
+}
+
+export function drawFrame(view, player) {
+  updateCamera(view.camera, player);
+  view.renderer.render(view.scene, view.camera);
 }
